@@ -1,0 +1,19 @@
+Setup
+create user helium24, password proton2
+nano /etc/supervisor/conf.d/helium24.conf
+-> Copy the following
+>>
+[program:helium24]
+command=/usr/bin/dotnet ./WedSite.dll --server.urls "http://*:80"
+user=root
+stderr_logfile = /home/helium24/netcoreapp3.1/stderr.log
+stdout_logfile = /home/helium24/netcoreapp3.1/stdout.log
+directory = /home/helium24/netcoreapp3.1
+>>
+supervisorctl reread
+supervisorctl update
+supervisorctl start helium24
+
+https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/areas?view=aspnetcore-3.1#:~:text=Areas%20are%20an%20ASP.NET%20feature%20used%20to%20organize,controller%20and%20action%20or%20a%20Razor%20Page%20page.
+https://andrewlock.net/customising-aspnetcore-identity-without-editing-the-pagemodel/
+https://docs.microsoft.com/en-us/aspnet/core/security/authentication/scaffold-identity?view=aspnetcore-3.1&tabs=visual-studio
