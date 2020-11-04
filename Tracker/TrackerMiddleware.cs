@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,18 +11,16 @@ namespace WedSite.Tracker
     {
         private readonly RequestDelegate next;
         private readonly IDatabase database;
-        private readonly ITracker tracker;
 
-        public TrackerMiddleware(RequestDelegate next, IDatabase database, ITracker tracker)
+        public TrackerMiddleware(RequestDelegate next, IDatabase database)
         {
             this.next = next;
             this.database = database;
-            this.tracker = tracker;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var IP = tracker.GetIp(context.Request);
+            var IP = context.Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string requestPath = context.Request.Path.Value;
 
             database.SaveIpForLookup(IP);

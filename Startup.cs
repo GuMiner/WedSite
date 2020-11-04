@@ -30,7 +30,6 @@ namespace WedSite
 
             LiteDbDatabase.Initialize();
             services.AddSingleton<IDatabase, LiteDbDatabase>();
-            services.AddSingleton<ITracker, Tracker.Tracker>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();

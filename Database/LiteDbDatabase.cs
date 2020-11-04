@@ -2,14 +2,16 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using WedSite.Data;
 
 namespace WedSite.Database
 {
     public class LiteDbDatabase : IDatabase, IDisposable
     {
-        private ILiteDatabase database;
-        private ILogger<LiteDbDatabase> logger;
+        private readonly ILiteDatabase database;
+        private readonly ILogger<LiteDbDatabase> logger;
         
         public LiteDbDatabase(ILogger<LiteDbDatabase> logger)
         {
@@ -25,6 +27,9 @@ namespace WedSite.Database
 
             var ipCollection = db.GetCollection<CachedIp>("ipCache");
             ipCollection.EnsureIndex(ip => ip.IP);
+
+            var ipLookupCollection = db.GetCollection<CachedIp>("ipsToLookup");
+            ipLookupCollection.EnsureIndex(ip => ip.IP);
         }
 
         public void AddAnonymousVisit(AnonymousVisit anonymousVisit)
@@ -70,26 +75,47 @@ namespace WedSite.Database
             collection.Insert(guestVisit);
         }
 
-        public void Dispose()
-        {
-            database?.Dispose();
-        }
-
-        public string GetCachedLocation(string ip)
+        public void SaveIpForLookup(string ip)
         {
             ip = ip.ToLowerInvariant();
 
             var collection = database.GetCollection<CachedIp>("ipCache");
             CachedIp cachedIp = collection.Query().Where(i => i.IP.Equals(ip)).FirstOrDefault();
-            return cachedIp?.Location;
+            if (cachedIp == null)
+            {
+                var lookupCollection = database.GetCollection<CachedIp>("ipsToLookup");
+                lookupCollection.Insert(new CachedIp(ip, null));
+            }
+        }
+        
+        public IEnumerable<string> GetIpsToLookup()
+        {
+            var collection = database.GetCollection<CachedIp>("ipsToLookup");
+            return collection.FindAll().Select(cachedIp => cachedIp.IP).ToList();
         }
 
-        public void CacheLocation(string ip, string location)
+        public void CacheIpLocation(string ip, string location)
         {
             ip = ip.ToLowerInvariant();
 
             var collection = database.GetCollection<CachedIp>("ipCache");
-            collection.Insert(new CachedIp(ip, location));
+            var lookupCollection = database.GetCollection<CachedIp>("ipsToLookup");
+            CachedIp cachedIp = collection.Query().Where(i => i.IP.Equals(ip)).FirstOrDefault();
+            if (cachedIp == null)
+            {
+                collection.Insert(new CachedIp(ip, location));
+            }
+
+            cachedIp = lookupCollection.Query().Where(i => i.IP.Equals(ip)).FirstOrDefault();
+            if (cachedIp != null)
+            {
+                lookupCollection.Delete(cachedIp.Id);
+            }
+        }
+
+        public void Dispose()
+        {
+            database?.Dispose();
         }
     }
 }

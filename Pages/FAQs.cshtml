@@ -5,14 +5,15 @@
 
     List<KeyValuePair<string, string>> questionsWithAnswers = new List<KeyValuePair<string, string>>
     {
-            new KeyValuePair<string, string>("What should I wear?", "Dresses, suits, or other formal wear."),
-            new KeyValuePair<string, string>("More questions?", "Probably"),
+            new KeyValuePair<string, string>("What should I wear?", "Dresses, suits,  or other formal wear."),
+            new KeyValuePair<string, string>("Where should I stay?", "The Puget Sound area has a plethora of options, with many around the airport and downtown areas."),
     };
     int headerCounter = 0;
 }
 
 <div class="text-left">
     <h1 class="display-4">FAQs</h1>
+    <hr />
     <p>Have a question that isn't listed here? Email either <a href="mailto:a.k.brazier@comcast.net">Angie</a> or <a href="mailto:gus.gran@outlook.com">Gustave</a>!</p>
     <div class="accordion" id="accordion">
         @foreach (KeyValuePair<string, string> question in questionsWithAnswers)

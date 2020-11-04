@@ -4,6 +4,7 @@
 # Ignore consumer-provided libraries
 include
 lib
+WedSite.db
 
 # User-specific files
 *.suo

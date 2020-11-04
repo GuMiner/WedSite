@@ -1,7 +1,7 @@
 ﻿@page
 @model ScheduleModel
 @{
-    ViewData["Title"] = "Schedule";
+    ViewData["Title"] = "Schedule & Venue";
 }
 
 <div class="text-center">
@@ -9,68 +9,68 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <h4>Rehearsal</h4>
-            <div class="well">
-                <b><i>Thursday, September 23rd, 2021</i></b>
-                <br />
-                <i>TBD (PM)</i>
+            <div class="row">
+                <div class="col">
+                    <h4>Rehearsal</h4>
+                    <div class="well">
+                        <b><i>Thursday, September 23<sup>rd</sup>, 2021</i></b>
+                        <br />
+                        <i>TBD (PM)</i>
+                    </div>
+                </div>
             </div>
-            <p>
-                Relax after traveling and before the ceremony.
-            </p>
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <h4>Ceremony</h4>
+                    <div class="well">
+                        <b><i>Saturday, September 25<sup>th</sup>, 2021</i></b>
+                        <br />
+                        <i>TBD (PM)</i>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <h4>Reception</h4>
+                    <div class="well">
+                        <b><i>Saturday, September 25<sup>th</sup>, 2021</i></b>
+                        <br />
+                        <i>TBD (PM)</i>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-7 col-md-offset-2">
-            <section>
-                <div>
+            <div class="row">
+                <div class="col">
                     <p>
-                        The Olson Mansion
+                        <a href="https://olsonmansionrentals.com/">The Olson Mansion</a>
                         <br />
                         21401 244th Ave SE
                         <br />
                         Maple Valley, WA 98038
                     </p>
-                    https://www.olsonmansionrentals.com/
                 </div>
-            </section>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="~/img/mansion/view1.jpg"><img class="img-fluid img-thumbnail" src="~/img/mansion/view1.jpg" alt="Olson Mansion picture 1" /></a>
+                </div>
+                <div class="col">
+                    <a href="~/img/mansion/view2.jpg"><img class="img-fluid img-thumbnail" src="~/img/mansion/view2.jpg" alt="Olson Mansion picture 2" /></a>
+                </div>
+            </div>
         </div>
     </div>
 
     <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <h4>Ceremony</h4>
-            <div class="well">
-                <i>4:00 PM - 5:00 PM</i>
-            </div>
-        </div>
-        <div class="col-md-7 col-md-offset-2">
-            <section>
-                <div>
-                    <p>
-                        Location, time, details, etc.
-                    </p>
-                </div>
-            </section>
-        </div>
-    </div>
-
+    <h1 class="display-4">Venue</h1>
     <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <h4>Reception</h4>
-            <div class="well">
-                <i>5:00 PM - 9:00 PM</i>
-            </div>
-        </div>
-        <div class="col-md-7 col-md-offset-2">
-            <section>
-                <div>
-                    <p>
-                        Location, time, details, etc.
-                        Dinner, bar, dancing, etc.
-                    </p>
-                </div>
-            </section>
-        </div>
-    </div>
+    <p>
+        Olson Mansion is located 30 minutes from the SeaTac International Airport, east of south Seattle. There is plenty of parking at the venue.
+    </p>
+    <img class="img-fluid rounded" src="~/img/TravelMap.JPG" alt="Travel map" />
 </div>

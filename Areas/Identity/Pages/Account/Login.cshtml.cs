@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using WedSite.Database;
 using WedSite.Data;
-using WedSite.Tracker;
 
 namespace WedSite.Areas.Identity.Pages.Account
 {
@@ -20,12 +19,10 @@ namespace WedSite.Areas.Identity.Pages.Account
     {
         private readonly ILogger<LoginModel> logger;
         private readonly IDatabase database;
-        private readonly ITracker tracker;
 
-        public LoginModel(IDatabase database, ITracker tracker, ILogger<LoginModel> logger)
+        public LoginModel(IDatabase database, ILogger<LoginModel> logger)
         {
             this.database = database;
-            this.tracker = tracker;
             this.logger = logger;
         }
 
@@ -67,15 +64,18 @@ namespace WedSite.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 Input.RsvpCode = Input.RsvpCode.Replace("-", string.Empty);
+                
+                string IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                
                 Guest guest = database.GetGuest(Input.RsvpCode);
                 if (guest is null)
                 {
                     ModelState.AddModelError(string.Empty, "Couldn't find a wedding invitation using that code.");
-                    Console.WriteLine($"Login failure at IP {this.Request.HttpContext.Connection.RemoteIpAddress.ToString()} with code {Input.RsvpCode}");
+                    Console.WriteLine($"Login failure at IP {IP} with code {Input.RsvpCode}");
                     return Page();
                 }
 
-                long loginId = database.AddGuestLogin(new GuestLogin(guest.Id, tracker.GetIp(Request)));
+                long loginId = database.AddGuestLogin(new GuestLogin(guest.Id, IP));
 
                 var claims = new List<Claim>
                 {

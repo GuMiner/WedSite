@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging;
 
 namespace WedSite.Pages
 {
-    public class HotelTravelModel : PageModel
+    public class VisitingWaModel : PageModel
     {
         private readonly ILogger<ScheduleModel> _logger;
 
-        public HotelTravelModel(ILogger<ScheduleModel> logger)
+        public VisitingWaModel(ILogger<ScheduleModel> logger)
         {
             _logger = logger;
         }
