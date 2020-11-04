@@ -11,21 +11,18 @@ using System;
 using System.Collections.Generic;
 using WedSite.Database;
 using WedSite.Data;
-using WedSite.Tracker;
 
-namespace WedSite.Areas.Identity.Pages.Account
+namespace WedSite.Pages
 {
     [AllowAnonymous]
-    public class LoginModel : PageModel
+    public class AdminLoginModel : PageModel
     {
-        private readonly ILogger<LoginModel> logger;
+        private readonly ILogger<AdminLoginModel> logger;
         private readonly IDatabase database;
-        private readonly ITracker tracker;
 
-        public LoginModel(IDatabase database, ITracker tracker, ILogger<LoginModel> logger)
+        public AdminLoginModel(IDatabase database, ILogger<AdminLoginModel> logger)
         {
             this.database = database;
-            this.tracker = tracker;
             this.logger = logger;
         }
 
@@ -40,9 +37,7 @@ namespace WedSite.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [RegularExpression("[0-9]{3}\\-?[0-9]{3}\\-?[0-9]{1}",
-                ErrorMessage = "Wedding invitation code doesn't look right. Valid codes will look like '000-000-0'. Dashes are optional.")]
-            public string RsvpCode { get; set; }
+            public string AdminCode { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -52,7 +47,7 @@ namespace WedSite.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            returnUrl = returnUrl ?? Url.Content("/Index");
+            returnUrl = returnUrl ?? Url.Content("/Utility/Admin");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -62,27 +57,16 @@ namespace WedSite.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("/Index");
+            returnUrl = returnUrl ?? Url.Content("/Utility/Admin");
 
             if (ModelState.IsValid)
             {
-                Input.RsvpCode = Input.RsvpCode.Replace("-", string.Empty);
-                Guest guest = database.GetGuest(Input.RsvpCode);
-                if (guest is null)
-                {
-                    ModelState.AddModelError(string.Empty, "Couldn't find a wedding invitation using that code.");
-                    Console.WriteLine($"Login failure at IP {this.Request.HttpContext.Connection.RemoteIpAddress.ToString()} with code {Input.RsvpCode}");
-                    return Page();
-                }
-
-                long loginId = database.AddGuestLogin(new GuestLogin(guest.Id, tracker.GetIp(Request)));
 
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, "gus.gran@outlook.com"),
-                    new Claim(ClaimTypes.Name, guest.PartyName),
-                    new Claim(ClaimTypes.Role, "Guest"),
-                    new Claim(ClaimTypes.SerialNumber, loginId.ToString()),
+                    new Claim(ClaimTypes.Name, Input.AdminCode),
+                    new Claim(ClaimTypes.Role, "Admin"),
                 };
                 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -100,7 +84,7 @@ namespace WedSite.Areas.Identity.Pages.Account
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                logger.LogInformation($"{guest.PartyName} logged in.");
+                logger.LogInformation("Admin logged in.");
                 return LocalRedirect(returnUrl);
             }
 

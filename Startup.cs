@@ -1,3 +1,4 @@
+using LettuceEncrypt;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using WedSite.Database;
+using WedSite.Tracker;
 
 namespace WedSite
 {
@@ -21,6 +25,13 @@ namespace WedSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddLettuceEncrypt().PersistDataToDirectory(new DirectoryInfo("."), "todoWhereToPutPasswords");
+            services.AddHttpClient();
+
+            LiteDbDatabase.Initialize();
+            services.AddSingleton<IDatabase, LiteDbDatabase>();
+            services.AddSingleton<ITracker, Tracker.Tracker>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -42,11 +53,14 @@ namespace WedSite
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStatusCodePagesWithRedirects("/Utility/PageNotFound");
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<TrackerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
