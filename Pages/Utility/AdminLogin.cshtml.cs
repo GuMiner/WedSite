@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using WedSite.Database;
 using WedSite.Data;
+using WedSite.Tracker;
 
 namespace WedSite.Pages
 {
@@ -61,12 +62,23 @@ namespace WedSite.Pages
 
             if (ModelState.IsValid)
             {
+                var IP = Utilities.GetIp(Request);
+
+                if (!Input.AdminCode.Equals("superSecureAdmin42"))
+                {
+                    ModelState.AddModelError(string.Empty, "That's not the admin password!");
+                    Console.WriteLine($"ADMIN Login failure at IP {IP}.");
+                    return Page();
+                }
+
+                long loginId = database.AddGuestLogin(new GuestLogin(-42, IP));
 
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, "gus.gran@outlook.com"),
-                    new Claim(ClaimTypes.Name, Input.AdminCode),
+                    new Claim(ClaimTypes.Name, "Admin"),
                     new Claim(ClaimTypes.Role, "Admin"),
+                    new Claim(ClaimTypes.SerialNumber, loginId.ToString()),
                 };
                 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

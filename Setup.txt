@@ -1,18 +1,44 @@
 Setup
-create user helium24, password proton2
-nano /etc/supervisor/conf.d/helium24.conf
+> Buy domain
+> Assign digital ocean namespaces
+> Create debian 10 server, basic, enable monitoring.
+> Create 'angiegus.com' domain, redirect @ to the server.
+
+apt-get update
+apt-get install htop supervisor unzip
+
+wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+
+apt-get update
+apt-get install apt-transport-https
+apt-get update
+apt-get install aspnetcore-runtime-3.1
+
+# Allow binding to ports 80 and 443 https://superuser.com/questions/710253/allow-non-root-process-to-bind-to-port-80-and-443
+sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/share/dotnet/dotnet
+
+(copy site to /home/angiegus/wedsite)
+(copy wwwroot to 'wedsite')
+Run ``dotnet ./WedSite.dll --urls "https://*:443;http://*:80"`` as root to setup certs for angiegus.com and www.angiegus.com
+
+cd wedsite
+chown -R angiegus:angiegus *
+
+create user angiegus, password proton2german4, name AngieGus
+nano /etc/supervisor/conf.d/angiegus.conf
 -> Copy the following
 >>
-[program:helium24]
-command=/usr/bin/dotnet ./WedSite.dll --server.urls "http://*:80"
-user=root
-stderr_logfile = /home/helium24/netcoreapp3.1/stderr.log
-stdout_logfile = /home/helium24/netcoreapp3.1/stdout.log
-directory = /home/helium24/netcoreapp3.1
+[program:wedsite]
+command=/usr/bin/dotnet ./WedSite.dll --urls "https://*:443;http://*:80"
+user=angiegus
+stderr_logfile = /home/angiegus/wedsite/stderr.log
+stdout_logfile = /home/angiegus/wedsite/stdout.log
+directory = /home/angiegus/wedsite
 >>
 supervisorctl reread
 supervisorctl update
-supervisorctl start helium24
+supervisorctl start wedsite
 
 https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/areas?view=aspnetcore-3.1#:~:text=Areas%20are%20an%20ASP.NET%20feature%20used%20to%20organize,controller%20and%20action%20or%20a%20Razor%20Page%20page.
 https://andrewlock.net/customising-aspnetcore-identity-without-editing-the-pagemodel/

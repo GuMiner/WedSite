@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using WedSite.Database;
 using WedSite.Data;
+using WedSite.Tracker;
 
 namespace WedSite.Areas.Identity.Pages.Account
 {
@@ -64,8 +65,8 @@ namespace WedSite.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 Input.RsvpCode = Input.RsvpCode.Replace("-", string.Empty);
-                
-                string IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
+                string IP = Utilities.GetIp(Request);
                 
                 Guest guest = database.GetGuest(Input.RsvpCode);
                 if (guest is null)

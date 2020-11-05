@@ -15,13 +15,13 @@ namespace WedSite.Database
         
         public LiteDbDatabase(ILogger<LiteDbDatabase> logger)
         {
-            database = new LiteDatabase("Filename=./WedSite.db; Connection=shared");
+            database = new LiteDatabase("Filename=./WedSite.db");
             this.logger = logger;
         }
 
         internal static void Initialize()
         {
-            using var db = new LiteDatabase("Filename=./WedSite.db; Connection=shared");
+            using var db = new LiteDatabase("Filename=./WedSite.db");
             var guestCollection = db.GetCollection<Guest>("guests");
             guestCollection.EnsureIndex(g => g.ReservationCode);
 
@@ -84,7 +84,11 @@ namespace WedSite.Database
             if (cachedIp == null)
             {
                 var lookupCollection = database.GetCollection<CachedIp>("ipsToLookup");
-                lookupCollection.Insert(new CachedIp(ip, null));
+                cachedIp = lookupCollection.Query().Where(i => i.IP.Equals(ip)).FirstOrDefault();
+                if (cachedIp == null)
+                {
+                    lookupCollection.Insert(new CachedIp(ip, null));
+                }
             }
         }
         

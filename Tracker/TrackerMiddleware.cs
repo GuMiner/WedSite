@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,6 +13,15 @@ namespace WedSite.Tracker
         private readonly RequestDelegate next;
         private readonly IDatabase database;
 
+        private static readonly HashSet<string> requestPathsToSkip = new HashSet<string>
+        {
+            "/css",
+            "/lib",
+            "/js",
+            "/img",
+            "/favicon",
+        };
+
         public TrackerMiddleware(RequestDelegate next, IDatabase database)
         {
             this.next = next;
@@ -20,16 +30,20 @@ namespace WedSite.Tracker
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var IP = context.Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string requestPath = context.Request.Path.Value;
+            if (requestPathsToSkip.Any(path => requestPath.StartsWith(path)))
+            {
+                await next(context);
+                return;
+            }
+
+            var IP = Utilities.GetIp(context.Request);
 
             database.SaveIpForLookup(IP);
             if (context.User.Identity.IsAuthenticated)
             {
                 var loginId = long.Parse(context.User.Claims.First(c => c.Type == ClaimTypes.SerialNumber).Value);
                 database.AddGuestVisit(new GuestVisit(loginId, requestPath));
-                //context.User.Claims.ser
-                //database.AddGuestVisit(new GuestVisit)
             }
             else
             {

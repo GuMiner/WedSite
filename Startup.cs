@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.IO;
 using WedSite.Database;
 using WedSite.Tracker;
@@ -15,9 +16,12 @@ namespace WedSite
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            this.env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -25,7 +29,11 @@ namespace WedSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddLettuceEncrypt().PersistDataToDirectory(new DirectoryInfo("."), "todoWhereToPutPasswords");
+            if (env.IsProduction())
+            {
+                services.AddLettuceEncrypt().PersistDataToDirectory(new DirectoryInfo("."), string.Empty);
+            }
+
             services.AddHttpClient();
 
             LiteDbDatabase.Initialize();
@@ -52,7 +60,16 @@ namespace WedSite
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseStatusCodePagesWithRedirects("/Utility/PageNotFound");
+            app.UseStatusCodePages(async context =>
+            {
+                context.HttpContext.Response.ContentType = "text/html";
+
+                Console.WriteLine($"Couldn't find page: {context.HttpContext.Request.Path}");
+
+                await context.HttpContext.Response.WriteAsync(
+                    $"<h1>HTTP {context.HttpContext.Response.StatusCode}</h1><h2>Something isn't working right</h2>" +
+                    "<p>Please email Gustave Granroth at <a href=\"mailto: gus.gran@outlook.com\">gus.gran@outlook.com</a> and I'll fix it.</p>");
+            });
 
             app.UseRouting();
 

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -54,7 +57,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @(DateTime.UtcNow.Year) - Gustave Granroth - <a asp-area="" asp-page="/Utility/AdminLogin">Admin</a>
+            &copy; @(DateTime.UtcNow.Year) - Gustave Granroth - <a asp-area="" asp-page="/Utility/AdminLogin">Admin</a> - IP @(httpContextAccessor.HttpContext.Connection.RemoteIpAddress)
         </div>
     </footer>
 
