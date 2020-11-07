@@ -60,7 +60,7 @@ namespace WedSite.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("/Index");
+            returnUrl = returnUrl ?? Url.Content("/Rsvp");
 
             if (ModelState.IsValid)
             {

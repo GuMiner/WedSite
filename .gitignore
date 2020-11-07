@@ -5,6 +5,7 @@
 include
 lib
 WedSite.db
+WedSite-log.db
 
 # User-specific files
 *.suo

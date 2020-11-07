@@ -1,24 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 
+@{ 
+    var ip = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.IsIPv4MappedToIPv6 ?
+        httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4() :
+        httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
 
-    @*Included in our pages so Bing / Google search know we are verified sites.*@
-    <meta name="google-site-verification" content="TODO" />
-    <meta name="msvalidate.01" content="TODO" />
+    <meta name="google-site-verification" content="Zti4jqUvpHFngPlQfmqcmD23mip2BhCydvtVaSwWzx0" />
+    <meta name="msvalidate.01" content="54833F3A9AB9EF94EABEF305F306DFED" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.css" />
     <link rel="stylesheet" href="~/css/site.min.css" />
 </head>
-<body>
+<body style="background-color:rgb(242, 250, 254);">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="background-color:rgb(211, 254, 213);">
             <div class="container">
                 <a class="navbar-brand text-nowrap" asp-area="" asp-page="/Index">WedSite</a>
                 @*Collapse shown on Mobile only*@
@@ -49,7 +55,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -57,12 +63,13 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @(DateTime.UtcNow.Year) - Gustave Granroth - <a asp-area="" asp-page="/Utility/AdminLogin">Admin</a> - IP @(httpContextAccessor.HttpContext.Connection.RemoteIpAddress)
+            &copy; @(DateTime.UtcNow.Year) - Gustave Granroth - <a asp-area="" asp-page="/Utility/AdminLogin">Admin</a> - IP @ip
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/leaflet/leaflet.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)

@@ -1,5 +1,5 @@
 ﻿@page
-@model FAQsModel
+@model RsvpModel
 @{
     ViewData["Title"] = "FAQs";
 
@@ -13,30 +13,31 @@
     int headerCounter = 0;
 }
 
-<div class="text-left container">
+<div class="text-left">
     <h1 class="display-4">FAQs</h1>
     <hr />
     <p>Have a question that isn't listed here? Email either <a href="mailto:a.k.brazier@comcast.net">Angie</a> or <a href="mailto:gus.gran@outlook.com">Gustave</a>!</p>
     <div class="accordion" id="accordion">
         @foreach (KeyValuePair<string, string> question in questionsWithAnswers)
         {
-            <div class="card">
-                <div class="card-header" id="heading@(headerCounter)">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse@(headerCounter)" aria-expanded="true" aria-controls="collapse@(headerCounter)">
-                            @(question.Key)
-                        </button>
-                    </h2>
-                </div>
+        <div class="card">
+            <div class="card-header" id="heading@(headerCounter)">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse@(headerCounter)" aria-expanded="true" aria-controls="collapse@(headerCounter)">
+                        @(question.Key)
+                    </button>
+                </h2>
+            </div>
 
-                <div id="collapse@(headerCounter)" class="collapse hide" aria-labelledby="heading@(headerCounter)" data-parent="#accordion">
-                    <div class="card-body">
-                        @(question.Value)
-                    </div>
+            <div id="collapse@(headerCounter)" class="collapse hide" aria-labelledby="heading@(headerCounter)" data-parent="#accordion">
+                <div class="card-body">
+                    @(question.Value)
                 </div>
             </div>
+        </div>
             headerCounter++;
         }
+        </div>
     </div>
     <br />
     <h1>COVID-19 Situation</h1>
@@ -48,5 +49,4 @@
         <br />
         If there are any developments or updates, we will post them here.
     </p>
-
 </div>

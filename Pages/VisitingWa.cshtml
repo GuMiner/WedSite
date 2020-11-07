@@ -1,11 +1,155 @@
 ﻿@page
 @model VisitingWaModel
+
+@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+
 @{
     ViewData["Title"] = "Visiting WA";
 }
 
-<div class="text-center">
+<div class="text-center container-fluid">
     <h1 class="display-4">Visiting Washington</h1>
     <hr />
-    <p>details...</p>
+    <p>If you have some extra time while in Washington and are looking for things to do, here are some suggestions from Angie and Gus!</p>
+    <div class="row">
+        <div class="col-auto text-left">
+            <h2>Eastside</h2>
+            <hr />
+
+            <h3>Redmond/Bellevue</h3>
+            <p>
+                <a href="https://www.microsoft.com/en-us/visitorcenter/default">Microsoft Corporate Visitor Center</a> <br />
+                <a href="https://www.sushimebellevue.com/">Sushi Me Conveyor Belt Sushi</a>
+            </p>
+
+            <br />
+            <h2>Seattle</h2>
+            <hr />
+            <p>
+                <a href="http://www.seattle.gov/parks/find/parks/kerry-park">Kerry Park</a> <br />
+                <a href="http://www.nwoc.com/">Lake Union Kayak Rentals</a>
+            </p>
+
+            <h3>Seattle Downtown</h3>
+            <p>
+                <a href="http://www.seattleartmuseum.org/visit/olympic-sculpture-park">Olympic Sculpture Park</a>
+            </p>
+
+            <h4>Seattle Center</h4>
+            <p>
+                <a href="https://www.spaceneedle.com/">Space Needle</a> <br />
+                <a href="https://www.mopop.org/">Museum of Pop Culture (MoPOP, previously the EMP)</a> <br />
+                <a href="https://www.chihuly.com/exhibitions/chihuly-garden-and-glass/chihuly-garden-and-glass">Chihuly Glass Art Exhibition</a> <br />
+            </p>
+
+            <h3>West Seattle</h3>
+            <p>
+                <a href="http://www.seattle.gov/parks/find/parks/alki-beach-park">Alki Beach Park</a>
+            </p>
+
+            <h3>Fremont</h3>
+            <p>
+                <a href="http://www.seattle.gov/parks/find/parks/gas-works-park">Gas Works Park</a> <br />
+                <a href="http://www.seattle.gov/neighborhoods/programs-and-services/p-patch-community-gardening/p-patch-list/trolls-knoll">Fremont Troll</a> <br />
+            </p>
+
+            <h3>Ballard</h3>
+            <p>
+                <a href="https://www.ballardlocks.org/">Ballard Locks &amp; Carl S. English Jr. Botanical Gardens</a> <br />
+                <a href="https://www.fulltilticecream.com/">Full Tilt Ice Cream &amp; Pinball</a>
+            </p>
+
+            <br />
+            <h2>Renton / SeaTac</h2>
+            <hr />
+            <p>
+                <a href="https://kubotagarden.org/index.html">Kubota Japanese Garden</a> <br />
+                <a href="https://www.round1usa.com/location/south-center-mall/">Round1 Japanese Arcade and Bowling</a>
+            </p>
+
+            <br />
+            <h2>Everett / Lynnwood</h2>
+            <hr />
+            <p>
+                <a href="https://www.wsdot.com/ferries/schedule/scheduledetailbyroute.aspx?route=ed-king">Edmonds/Kingston Ferry</a>
+            </p>
+
+            <br />
+            <h2>Cascade Mountains</h2>
+            <hr />
+            <p>
+                <a href="https://www.wta.org/go-hiking/hikes/rattlesnake-ledge">Rattlesnake Ledge hike</a> <br />
+                <a href="https://leavenworth.org/">Leavenworth</a>
+            </p>
+        </div>
+        <div class="col-md">
+            <div id="mapId" style="height:700px;"></div>
+        </div>
+    </div>
 </div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        // TODO custom icons per item, or colors. var foodIcon = L.Icon({})
+
+        var kerryPark = L.marker([47.629601, -122.360015]).bindPopup("🌲 Kerry Park", { autoClose: false, closeButton: false });
+        var sushiMe = L.marker([47.621299, -122.132778]).bindPopup("🍣 SushiMe", { autoClose: false, closeButton: false });
+        var rattlesnake = L.marker([47.432999, -121.767139]).bindPopup("🌲 Rattlesnake Ledge", { autoClose: false, closeButton: false });
+        var alki = L.marker([47.58174, -122.405194]).bindPopup("🌲 Alki Beach", { autoClose: false, closeButton: false });
+        var gasworks = L.marker([47.645401, -122.33492]).bindPopup("🌲 Alki Beach", { autoClose: false, closeButton: false });
+        var kubota = L.marker([47.51396, -122.265794]).bindPopup("🌲 Kubota Garden", { autoClose: false, closeButton: false });
+
+        var round1 = L.marker([47.460109, -122.256104]).bindPopup("🎮 Round1", { autoClose: false, closeButton: false });
+        var fullTilt = L.marker([47.667928, -122.383794]).bindPopup("🎮 Full Tilt", { autoClose: false, closeButton: false });
+        
+        var outdoorLayer = L.layerGroup([kerryPark, rattlesnake, alki, gasworks, kubota]);
+        var foodLayer = L.layerGroup([sushiMe]);
+        var arcadeLayer = L.layerGroup([round1, fullTilt]);
+
+        var tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiZ3VtaW5lciIsImEiOiJja2g3MmRlbXcwM3EwMnFubHVzM2dmbmwzIn0.C-LffychrYSa_aJcXOFi2w'
+        });
+
+        var visitingMap = L.map('mapId', {
+            center: [47.6358, -122.1419],
+            zoom: 10,
+            layers: [tileLayer, outdoorLayer, foodLayer, arcadeLayer]
+        });
+
+        L.control.layers({}, { "🌲 Outdoors": outdoorLayer, "🍣 Food": foodLayer, "🎮 Arcade": arcadeLayer }).addTo(visitingMap);
+
+        // Rather hacky way to open all popups at startup and when a layer is clicked
+        Object.values(outdoorLayer._layers).forEach(layer => layer.openPopup());
+        Object.values(foodLayer._layers).forEach(layer => layer.openPopup());
+        Object.values(arcadeLayer._layers).forEach(layer => layer.openPopup());
+
+        visitingMap.on('overlayadd', onOverlayAdd);
+        function onOverlayAdd(e) {
+            Object.values(e.layer._layers).forEach(layer => layer.openPopup());
+        }
+
+        // Admin-only click help text.
+        @if (httpContextAccessor.HttpContext.User.IsInRole("Admin"))
+        {
+            <text>
+            var popup = L.popup();
+            function onMapClick(e)
+            {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(visitingMap);
+            }
+
+            visitingMap.on('click', onMapClick);
+            </text>
+        }
+    </script>
+}

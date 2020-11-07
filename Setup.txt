@@ -36,10 +36,7 @@ stderr_logfile = /home/angiegus/wedsite/stderr.log
 stdout_logfile = /home/angiegus/wedsite/stdout.log
 directory = /home/angiegus/wedsite
 >>
+
 supervisorctl reread
 supervisorctl update
 supervisorctl start wedsite
-
-https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/areas?view=aspnetcore-3.1#:~:text=Areas%20are%20an%20ASP.NET%20feature%20used%20to%20organize,controller%20and%20action%20or%20a%20Razor%20Page%20page.
-https://andrewlock.net/customising-aspnetcore-identity-without-editing-the-pagemodel/
-https://docs.microsoft.com/en-us/aspnet/core/security/authentication/scaffold-identity?view=aspnetcore-3.1&tabs=visual-studio
