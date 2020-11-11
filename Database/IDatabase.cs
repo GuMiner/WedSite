@@ -19,6 +19,7 @@ namespace WedSite.Database
 
         // Updating
         void UpdateGuest(Guest guest);
+        IEnumerable<Guest> GetGuests();
 
         // IP Tracking
         void SaveIpForLookup(string ip);

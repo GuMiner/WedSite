@@ -1,52 +1,64 @@
 ﻿@page
 @model RsvpModel
 @{
-    ViewData["Title"] = "FAQs";
-
-    List<KeyValuePair<string, string>> questionsWithAnswers = new List<KeyValuePair<string, string>>
-    {
-            new KeyValuePair<string, string>("What should I wear?", "Dresses, slacks, suits, other semi-formal wear, etc."),
-            new KeyValuePair<string, string>("Where should I stay?", "The Puget Sound area has a plethora of options, with many around the airport and downtown areas."),
-            new KeyValuePair<string, string>("Will there be food?", "Yes! There will be dinner, drinks, and dessert!"),
-            new KeyValuePair<string, string>("Will there be dancing?", "Yes! There will be dancing. Look for where to provide song suggestions in your RSVP."),
-    };
-    int headerCounter = 0;
+    ViewData["Title"] = "RSVP";
 }
 
 <div class="text-left">
-    <h1 class="display-4">FAQs</h1>
+    <h1 class="display-4">RSVP</h1>
     <hr />
-    <p>Have a question that isn't listed here? Email either <a href="mailto:a.k.brazier@comcast.net">Angie</a> or <a href="mailto:gus.gran@outlook.com">Gustave</a>!</p>
-    <div class="accordion" id="accordion">
-        @foreach (KeyValuePair<string, string> question in questionsWithAnswers)
-        {
-        <div class="card">
-            <div class="card-header" id="heading@(headerCounter)">
-                <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse@(headerCounter)" aria-expanded="true" aria-controls="collapse@(headerCounter)">
-                        @(question.Key)
-                    </button>
-                </h2>
-            </div>
+    <h2>Welcome @Model.Guest.PartyName!</h2>
+    @if (Model.Guest.ReservationState == Data.GuestStates.LoginNoRsvp)
+    {
+        <p>
+            Please let us know if you are able to attend our wedding below.
+        </p>
+        <div class="row">
+            <div class="col-md-3">
+                <form asp-page-handler="rsvpYes" method="post">
+                    <div class="form-group">
+                        <label asp-for="AdultCount">How many adults will be coming?</label>
+                        <input asp-for="AdultCount" class="form-control" />
 
-            <div id="collapse@(headerCounter)" class="collapse hide" aria-labelledby="heading@(headerCounter)" data-parent="#accordion">
-                <div class="card-body">
-                    @(question.Value)
-                </div>
+                        <label asp-for="KidCount">How many kids will be coming?</label>
+                        <input asp-for="KidCount" class="form-control" />
+
+                        <label asp-for="SongRequests">Do you have any song requests?</label>
+                        <input asp-for="SongRequests" class="form-control" value="@Model.Guest.SongRequests" />
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">RSVP: Yes, we can come.</button>
+                    </div>
+                </form>
             </div>
         </div>
-            headerCounter++;
-        }
-        </div>
-    </div>
-    <br />
-    <h1>COVID-19 Situation</h1>
-    <hr />
-    <p>
-        <small>11/5/2020</small>
-        <br />
-        We are watching the COVID-19 situation and currently are optimistic that there will be no restrictions in place for our wedding next year.
-        <br />
-        If there are any developments or updates, we will post them here.
-    </p>
+
+        <hr />
+        <p>
+            If you are not able to attend, please let us know by clicking the button below.
+        </p>
+        <form asp-page-handler="rsvpNo" method="post">
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary">RSVP: No, we cannot attend</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>
+            Thank you for replying to our RSVP.
+            <br />
+            You replied:
+            <b>@(Model.Guest.ReservationState == Data.GuestStates.RsvpCanCome ? "RSVP: Yes, we can come." : "RSVP: No, we cannot come.") </b>
+        </p>
+        <hr />
+        <p>
+            If you would like to resubmit your RSVP, please click the button below and fill out the RSVP again.
+        </p>
+        <form asp-page-handler="rsvpReset" method="post">
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">Reset RSVP</button>
+            </div>
+        </form>
+    }
 </div>

@@ -76,6 +76,12 @@ namespace WedSite.Areas.Identity.Pages.Account
                     return Page();
                 }
 
+                if (guest.ReservationState == GuestStates.NoLogin)
+                {
+                    guest.ReservationState = GuestStates.LoginNoRsvp;
+                    database.UpdateGuest(guest);
+                }
+
                 long loginId = database.AddGuestLogin(new GuestLogin(guest.Id, IP));
 
                 var claims = new List<Claim>
@@ -84,6 +90,7 @@ namespace WedSite.Areas.Identity.Pages.Account
                     new Claim(ClaimTypes.Name, guest.PartyName),
                     new Claim(ClaimTypes.Role, "Guest"),
                     new Claim(ClaimTypes.SerialNumber, loginId.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, Input.RsvpCode),
                 };
                 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

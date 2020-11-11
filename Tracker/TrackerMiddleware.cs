@@ -20,6 +20,7 @@ namespace WedSite.Tracker
             "/js",
             "/img",
             "/favicon",
+            "/apple-touch",
         };
 
         public TrackerMiddleware(RequestDelegate next, IDatabase database)

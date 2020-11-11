@@ -1,52 +1,64 @@
 ﻿@page
 @model AdminModel
+@using WedSite.Data
 @{
     ViewData["Title"] = "Admin";
-
-    List<KeyValuePair<string, string>> questionsWithAnswers = new List<KeyValuePair<string, string>>
-    {
-            new KeyValuePair<string, string>("What should I wear?", "Dresses, slacks, suits, other semi-formal wear, etc."),
-            new KeyValuePair<string, string>("Where should I stay?", "The Puget Sound area has a plethora of options, with many around the airport and downtown areas."),
-            new KeyValuePair<string, string>("Will there be food?", "Yes! There will be dinner, drinks, and dessert!"),
-            new KeyValuePair<string, string>("Will there be dancing?", "Yes! There will be dancing. Look for where to provide song suggestions in your RSVP."),
-    };
-    int headerCounter = 0;
 }
 
 <div class="text-left">
-    <h1 class="display-4">FAQs</h1>
+    <h1 class="display-4">Admin</h1>
     <hr />
-    <p>Have a question that isn't listed here? Email either <a href="mailto:a.k.brazier@comcast.net">Angie</a> or <a href="mailto:gus.gran@outlook.com">Gustave</a>!</p>
-    <div class="accordion" id="accordion">
-        @foreach (KeyValuePair<string, string> question in questionsWithAnswers)
-        {
-        <div class="card">
-            <div class="card-header" id="heading@(headerCounter)">
-                <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse@(headerCounter)" aria-expanded="true" aria-controls="collapse@(headerCounter)">
-                        @(question.Key)
-                    </button>
-                </h2>
-            </div>
-
-            <div id="collapse@(headerCounter)" class="collapse hide" aria-labelledby="heading@(headerCounter)" data-parent="#accordion">
-                <div class="card-body">
-                    @(question.Value)
+    <div class="row">
+        <div class="col-sm-3">
+            <form asp-page-handler="add" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.PartyName">Party Name</label>
+                    <input asp-for="Input.PartyName" class="form-control" />
+                    <span asp-validation-for="Input.PartyName" class="text-danger"></span>
                 </div>
-            </div>
-        </div>
-            headerCounter++;
-        }
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Add Guest</button>
+                </div>
+            </form>
         </div>
     </div>
-    <br />
-    <h1>COVID-19 Situation</h1>
-    <hr />
-    <p>
-        <small>11/5/2020</small>
-        <br />
-        We are watching the COVID-19 situation and currently are optimistic that there will be no restrictions in place for our wedding next year.
-        <br />
-        If there are any developments or updates, we will post them here.
-    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">RSVP Code</th>
+                <th scope="col">Party Name</th>
+                <th scope="col">Min #</th>
+                <th scope="col">Max #</th>
+                <th scope="col">State</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Song Requests</th>
+                <th scope="col">Save Edits</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Guest guest in Model.Guests)
+            {
+            <tr>
+                <th style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.Id" value="@guest.Id" readonly="readonly" style="color:#c0c0c0" size="2" /></th>
+                <th style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationCode" value="@guest.ReservationCode" size="8" /></th>
+                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyName" value="@guest.PartyName" size="30" /></td>
+                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyMinSize" value="@guest.PartyMinSize" size="2" /></td>
+                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyMaxSize" value="@guest.PartyMaxSize" size="2" /></td>
+                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationState" value="@guest.ReservationState" size="8" /></td>
+                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationNotes" value="@guest.ReservationNotes" /></td>
+                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.SongRequests" value="@guest.SongRequests" /></td>
+                <td style="padding:4px;"><form id="guest-@guest.Id" asp-page-handler="update" method="post"><button type="submit" class="btn btn-secondary">Update</button></form></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <hr/>
+    <h3>Guest Statistics</h3>
+    <ul>
+        <li><b>Guest Min: </b> @Model.Guests.Sum(g => g.PartyMinSize)</li>
+        <li><b>Guest Max: </b> @Model.Guests.Sum(g => g.PartyMaxSize)</li>
+    </ul>
+    <a href="/Utility/AdminVisitors">See WedSite Visitors</a>
 </div>

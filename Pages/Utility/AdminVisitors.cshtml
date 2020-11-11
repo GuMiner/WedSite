@@ -5,120 +5,17 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 
 @{
-    ViewData["Title"] = "Visiting WA";
+    ViewData["Title"] = "Visitors";
 }
 
 <div class="text-center container-fluid">
-    <h1 class="display-4">Visiting Washington</h1>
+    <h1 class="display-4">Website Visitors</h1>
     <hr />
-    <p>If you have some extra time while in Washington and are looking for things to do, here are some suggestions from Angie and Gus!</p>
     <div class="row">
-        <div class="col-auto text-left">
-            <h2>Eastside</h2>
-            <hr />
-
-            <h3>Redmond/Bellevue</h3>
-            <p>
-                <a href="https://www.microsoft.com/en-us/visitorcenter/default">Microsoft Corporate Visitor Center</a> <br />
-                <a href="https://www.sushimebellevue.com/">Sushi Me Conveyor Belt Sushi</a>
-            </p>
-
-            <br />
-            <h2>Seattle</h2>
-            <hr />
-            <p>
-                <a href="http://www.seattle.gov/parks/find/parks/kerry-park">Kerry Park</a> <br />
-                <a href="http://www.nwoc.com/">Lake Union Kayak Rentals</a>
-            </p>
-
-            <h3>Seattle Downtown</h3>
-            <p>
-                <a href="http://www.seattleartmuseum.org/visit/olympic-sculpture-park">Olympic Sculpture Park</a>
-            </p>
-
-            <h4>Seattle Center</h4>
-            <p>
-                <a href="https://www.spaceneedle.com/">Space Needle</a> <br />
-                <a href="https://www.mopop.org/">Museum of Pop Culture (MoPOP, previously the EMP)</a> <br />
-                <a href="https://www.chihuly.com/exhibitions/chihuly-garden-and-glass/chihuly-garden-and-glass">Chihuly Glass Art Exhibition</a> <br />
-            </p>
-
-            <h3>West Seattle</h3>
-            <p>
-                <a href="http://www.seattle.gov/parks/find/parks/alki-beach-park">Alki Beach Park</a>
-            </p>
-
-            <h3>Fremont</h3>
-            <p>
-                <a href="http://www.seattle.gov/parks/find/parks/gas-works-park">Gas Works Park</a> <br />
-                <a href="http://www.seattle.gov/neighborhoods/programs-and-services/p-patch-community-gardening/p-patch-list/trolls-knoll">Fremont Troll</a> <br />
-            </p>
-
-            <h3>Ballard</h3>
-            <p>
-                <a href="https://www.ballardlocks.org/">Ballard Locks &amp; Carl S. English Jr. Botanical Gardens</a> <br />
-                <a href="https://www.fulltilticecream.com/">Full Tilt Ice Cream &amp; Pinball</a>
-            </p>
-
-            <br />
-            <h2>Renton / SeaTac</h2>
-            <hr />
-            <p>
-                <a href="https://kubotagarden.org/index.html">Kubota Japanese Garden</a> <br />
-                <a href="https://www.round1usa.com/location/south-center-mall/">Round1 Japanese Arcade and Bowling</a>
-            </p>
-
-            <br />
-            <h2>Everett / Lynnwood</h2>
-            <hr />
-            <p>
-                <a href="https://www.wsdot.com/ferries/schedule/scheduledetailbyroute.aspx?route=ed-king">Edmonds/Kingston Ferry</a>
-            </p>
-
-            <br />
-            <h2>Cascade Mountains</h2>
-            <hr />
-            <p>
-                <a href="https://www.wta.org/go-hiking/hikes/rattlesnake-ledge">Rattlesnake Ledge hike</a> <br />
-                <a href="https://www.wta.org/go-hiking/hikes/wallace-falls">Wallace Falls hike</a> <br />
-                <a href="https://leavenworth.org/">Leavenworth</a>
-            </p>
-        </div>
         @* Photos *@
         <div class="col-md">
             <div class="row-auto">
                 <div id="mapId" style="height:650px;"></div>
-            </div>
-            <div class="row">
-                <div class="col-auto px-1 py-1">
-                    <div class="card">
-                        <a href="~/img/visiting/edmonds1.jpg"><img src="~/img/visiting/edmonds1.jpg" alt="Edmonds-Kingston Ferry" class="card-img-top img-fluid rounded" style="width:700px" /></a>
-                        <div class="card-footer">
-                            <div class="row justify-content-between">
-                                Edmonds-Kingston Ferry <small>(10/25/2020)</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <a href="~/img/visiting/kayak1.jpg"><img src="~/img/visiting/kayak1.jpg" alt="Lake Union Kayaking" class="card-img-top img-fluid rounded" style="width:700px" /></a>
-                        <div class="card-footer">
-                            <div class="row justify-content-between">
-                                Lake Union Kayaking <small>(9/6/2020)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-auto px-1 py-1">
-                    <div class="card">
-                        <a href="~/img/visiting/wallace1.jpg"><img src="~/img/visiting/wallace1.jpg" alt="Wallace Falls" class="card-img-top img-fluid rounded" style="width:500px" /></a>
-                        <div class="card-footer">
-                            <div class="row justify-content-between">
-                                Wallace Falls <small>(10/24/2020)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

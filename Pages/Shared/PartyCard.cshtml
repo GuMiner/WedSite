@@ -3,9 +3,9 @@
 
 <div class="col-auto px-1 py-1">
     <div class="card">
-        <a href="~/img/weddingparty/@Model.Image"><img src="~/img/weddingparty/@Model.Image" alt="@Model.Name portrait" class="card-img-top img-fluid rounded" style="width:500px" /></a>
+        <a href="~/img/weddingparty/@Model.Image"><img src="~/img/weddingparty/@Model.Image" alt="@Model.Name portrait" class="card-img-top img-fluid rounded" style="width:@(Model.ExtraWide ? 1000 : 500)px" /></a>
         <div class="card-footer">
-            <div class="row justify-content-between">
+            <div class="row justify-content-around">
                 <h3>@Model.Name</h3>
             </div>
         </div>

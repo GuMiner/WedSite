@@ -55,6 +55,12 @@ namespace WedSite.Database
                 .FirstOrDefault();
         }
 
+        public IEnumerable<Guest> GetGuests()
+        {
+            var collection = database.GetCollection<Guest>("guests");
+            return collection.FindAll().ToList();
+        }
+
         public void UpdateGuest(Guest guest)
         {
             logger.LogInformation($"GuestUpdate: {JsonConvert.SerializeObject(guest)}");

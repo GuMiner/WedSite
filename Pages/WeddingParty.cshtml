@@ -1,7 +1,7 @@
 ﻿@page
 @model WeddingPartyModel
 @{
-    ViewData["Title"] = "Hotel & Travel";
+    ViewData["Title"] = "Wedding Party";
 }
 
 <div class="text-center container">
@@ -11,8 +11,7 @@
         <h2 class="text-center">Bridge &amp; Groom</h2>
     </div>
     <div class="row justify-content-lg-center">
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Angie.jpg", "Angie Brazier")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Gustave.jpg", "Gustave Granroth")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Angie-Gus.jpg", "Angie Brazier & Gustave Granroth", true)' />
     </div>
 
     <hr />
@@ -20,8 +19,8 @@
         <h2 class="text-center">Maid of Honor &amp; Best Man</h2>
     </div>
     <div class="row justify-content-lg-center">
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Angie.jpg", "Kelsey Brazier")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Gustave.jpg", "Eric Kulcyk")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Kelsey.jpg", "Kelsey Brazier")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Eric.jpg", "Eric Kulcyk")' />
     </div>
 
     <hr />
@@ -29,13 +28,13 @@
         <h2 class="text-center">Bridesmaids &amp; Groomsmen</h2>
     </div>
     <div class="row justify-content-lg-center">
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Angie.jpg", "Josee Brazier")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Hans.jpg", "Lawrence Granroth")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Angie.jpg", "Kassy Brazier")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Hans.jpg", "Hans Granroth")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Angie.jpg", "Bonnie Granroth")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Hans.jpg", "Joran Weitzer")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Angie.jpg", "Bethany Kanehan")' />
-        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Hans.jpg", "Kyle Olive")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Josee.jpg", "Josee Brazier")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Lawrence.jpg", "Lawrence Granroth")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Kassy.jpg", "Kassy Brazier")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Hans2.jpg", "Hans Granroth")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Bonnie.jpg", "Bonnie Granroth")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Joran.jpg", "Joran Weitzer")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Bethany.jpg", "Bethany Kanehan")' />
+        <partial name="Shared/PartyCard.cshtml" model='new PartyCardModel("Kyle.jpg", "Kyle Olive")' />
     </div>
 </div>
