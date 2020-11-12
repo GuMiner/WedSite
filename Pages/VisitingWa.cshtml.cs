@@ -10,9 +10,9 @@ namespace WedSite.Pages
 {
     public class VisitingWaModel : PageModel
     {
-        private readonly ILogger<ScheduleModel> _logger;
+        private readonly ILogger<VisitingWaModel> _logger;
 
-        public VisitingWaModel(ILogger<ScheduleModel> logger)
+        public VisitingWaModel(ILogger<VisitingWaModel> logger)
         {
             _logger = logger;
         }

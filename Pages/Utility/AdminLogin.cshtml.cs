@@ -64,20 +64,29 @@ namespace WedSite.Pages
             {
                 var IP = Utilities.GetIp(Request);
 
-                if (!Input.AdminCode.Equals("superSecureAdmin42"))
+                var adminID = -42;
+                var nameRole = "Admin";
+                var email = "gus.gran@outlook.com";
+                if (Input.AdminCode.Equals("AngieReadOnlyAdmin"))
+                {
+                    adminID = -43;
+                    nameRole = "AdminReadOnly";
+                    email = "a.k.brazier@comcast.net";
+                }
+                else if (!Input.AdminCode.Equals("superSecureAdmin42"))
                 {
                     ModelState.AddModelError(string.Empty, "That's not the admin password!");
                     Console.WriteLine($"ADMIN Login failure at IP {IP}.");
                     return Page();
                 }
 
-                long loginId = database.AddGuestLogin(new GuestLogin(-42, IP));
+                long loginId = database.AddGuestLogin(new GuestLogin(adminID, IP));
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, "gus.gran@outlook.com"),
-                    new Claim(ClaimTypes.Name, "Admin"),
-                    new Claim(ClaimTypes.Role, "Admin"),
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.Name, nameRole),
+                    new Claim(ClaimTypes.Role, nameRole),
                     new Claim(ClaimTypes.SerialNumber, loginId.ToString()),
                 };
                 
@@ -96,7 +105,7 @@ namespace WedSite.Pages
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                logger.LogInformation("Admin logged in.");
+                logger.LogInformation($"Admin {nameRole} logged in.");
                 return LocalRedirect(returnUrl);
             }
 

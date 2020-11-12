@@ -10,9 +10,9 @@ namespace WedSite.Pages
 {
     public class WeddingPartyModel : PageModel
     {
-        private readonly ILogger<ScheduleModel> _logger;
+        private readonly ILogger<WeddingPartyModel> _logger;
 
-        public WeddingPartyModel(ILogger<ScheduleModel> logger)
+        public WeddingPartyModel(ILogger<WeddingPartyModel> logger)
         {
             _logger = logger;
         }

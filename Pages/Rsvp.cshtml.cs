@@ -45,7 +45,8 @@ namespace WedSite.Pages
             this.Guest = database.GetGuest(guestCode);
 
             this.Guest.ReservationState = GuestStates.RsvpCanCome;
-            this.Guest.ReservationNotes = AdultCount + " (" + KidCount + " kids)";
+            this.Guest.Adults = AdultCount;
+            this.Guest.Kids = KidCount;
             this.Guest.SongRequests = SongRequests;
             database.UpdateGuest(this.Guest);
         }

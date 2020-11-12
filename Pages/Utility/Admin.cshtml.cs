@@ -8,7 +8,7 @@ using WedSite.Database;
 
 namespace WedSite.Pages
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,AdminReadOnly")]
     public class AdminModel : PageModel
     {
         private readonly ILogger<AdminModel> _logger;

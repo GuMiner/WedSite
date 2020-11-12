@@ -28,6 +28,8 @@ namespace WedSite.Data
             ReservationState = GuestStates.NoLogin;
             ReservationNotes = "";
             SongRequests = "";
+            Adults = "";
+            Kids = "";
         }
 
         public static string GenerateCode()
@@ -43,7 +45,9 @@ namespace WedSite.Data
 
         public GuestStates ReservationState { get; set; }
         public string ReservationNotes { get; set; }
-
+        
+        public string Adults { get; set; }
+        public string Kids { get; set; }
         public string SongRequests { get; set; }
     }
 }

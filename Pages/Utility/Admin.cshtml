@@ -1,28 +1,34 @@
 ﻿@page
 @model AdminModel
+@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 @using WedSite.Data
 @{
     ViewData["Title"] = "Admin";
+    bool readOnly = httpContextAccessor.HttpContext.User.IsInRole("AdminReadOnly");
 }
 
 <div class="text-left">
-    <h1 class="display-4">Admin</h1>
-    <hr />
-    <div class="row">
-        <div class="col-sm-3">
-            <form asp-page-handler="add" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Input.PartyName">Party Name</label>
-                    <input asp-for="Input.PartyName" class="form-control" />
-                    <span asp-validation-for="Input.PartyName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Add Guest</button>
-                </div>
-            </form>
+    <h1 class="display-4">Admin@(readOnly?"ReadOnly":"")</h1>
+    @if (!readOnly)
+    {
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <form asp-page-handler="add" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Input.PartyName">Party Name</label>
+                        <input asp-for="Input.PartyName" class="form-control" />
+                        <span asp-validation-for="Input.PartyName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Add Guest</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    }
     <table class="table">
         <thead>
             <tr>
@@ -32,33 +38,44 @@
                 <th scope="col">Min #</th>
                 <th scope="col">Max #</th>
                 <th scope="col">State</th>
+                <th scope="col">Adults</th>
+                <th scope="col">Kids</th>
                 <th scope="col">Notes</th>
                 <th scope="col">Song Requests</th>
-                <th scope="col">Save Edits</th>
+                @if (!readOnly)
+                {
+                    <th scope="col">Save Edits</th>
+                }
             </tr>
         </thead>
         <tbody>
-            @foreach (Guest guest in Model.Guests)
+            @foreach (Guest guest in Model.Guests.Reverse())
             {
-            <tr>
-                <th style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.Id" value="@guest.Id" readonly="readonly" style="color:#c0c0c0" size="2" /></th>
-                <th style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationCode" value="@guest.ReservationCode" size="8" /></th>
-                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyName" value="@guest.PartyName" size="30" /></td>
-                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyMinSize" value="@guest.PartyMinSize" size="2" /></td>
-                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyMaxSize" value="@guest.PartyMaxSize" size="2" /></td>
-                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationState" value="@guest.ReservationState" size="8" /></td>
-                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationNotes" value="@guest.ReservationNotes" /></td>
-                <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.SongRequests" value="@guest.SongRequests" /></td>
-                <td style="padding:4px;"><form id="guest-@guest.Id" asp-page-handler="update" method="post"><button type="submit" class="btn btn-secondary">Update</button></form></td>
-            </tr>
+                <tr>
+                    <th style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.Id" value="@guest.Id" readonly="readonly" style="color:#c0c0c0" size="2" /></th>
+                    <th style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationCode" value="@guest.ReservationCode" size="8" /></th>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyName" value="@guest.PartyName" size="30" /></td>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyMinSize" value="@guest.PartyMinSize" size="2" /></td>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.PartyMaxSize" value="@guest.PartyMaxSize" size="2" /></td>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationState" value="@guest.ReservationState" size="8" /></td>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.Adults" value="@guest.Adults" size="6" /></td>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.Kids" value="@guest.Kids" size="6" /></td>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.ReservationNotes" value="@guest.ReservationNotes" /></td>
+                    <td style="padding:4px;"><input form="guest-@guest.Id" asp-for="Update.SongRequests" value="@guest.SongRequests" /></td>
+                    @if (!readOnly)
+                    {
+                        <td style="padding:4px;"><form id="guest-@guest.Id" asp-page-handler="update" method="post"><button type="submit" class="btn btn-secondary">Update</button></form></td>
+                    }
+                </tr>
             }
         </tbody>
     </table>
-    <hr/>
+    <hr />
     <h3>Guest Statistics</h3>
     <ul>
         <li><b>Guest Min: </b> @Model.Guests.Sum(g => g.PartyMinSize)</li>
         <li><b>Guest Max: </b> @Model.Guests.Sum(g => g.PartyMaxSize)</li>
     </ul>
-    <a href="/Utility/AdminVisitors">See WedSite Visitors</a>
+    @if (!readOnly)
+    {<a href="/Utility/AdminVisitors">See WedSite Visitors</a>}
 </div>

@@ -18,10 +18,10 @@
                 <form asp-page-handler="rsvpYes" method="post">
                     <div class="form-group">
                         <label asp-for="AdultCount">How many adults will be coming?</label>
-                        <input asp-for="AdultCount" class="form-control" />
+                        <input asp-for="AdultCount" class="form-control" value="@Model.Guest.Adults" />
 
                         <label asp-for="KidCount">How many kids will be coming?</label>
-                        <input asp-for="KidCount" class="form-control" />
+                        <input asp-for="KidCount" class="form-control" value="@Model.Guest.Kids" />
 
                         <label asp-for="SongRequests">Do you have any song requests?</label>
                         <input asp-for="SongRequests" class="form-control" value="@Model.Guest.SongRequests" />
