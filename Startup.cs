@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,8 +76,11 @@ namespace WedSite
             }
 
             app.UseHttpsRedirection();
+            app.UseResponseCompression();
+
             app.UseStaticFiles(new StaticFileOptions()
             {
+                HttpsCompression = HttpsCompressionMode.Compress,
                 OnPrepareResponse = context =>
                 {
                     int threeDaysInSeconds = 3600 * 24 * 3;
@@ -84,7 +88,6 @@ namespace WedSite
                 }
             });
 
-            app.UseResponseCompression();
             app.UseStatusCodePages(async context =>
             {
                 context.HttpContext.Response.ContentType = "text/html";
