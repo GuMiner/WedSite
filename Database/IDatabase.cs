@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WedSite.Data;
 
 namespace WedSite.Database
@@ -25,5 +24,11 @@ namespace WedSite.Database
         void SaveIpForLookup(string ip);
         IEnumerable<string> GetIpsToLookup();
         void CacheIpLocation(string ip, string location);
+
+        // Metrics
+        IEnumerable<CachedIp> GetVisitedIps();
+        bool IsHacker(string ip);
+        bool IsRobot(string ip);
+        bool VisitedPages(string ip);
     }
 }

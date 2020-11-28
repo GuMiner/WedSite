@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
+using System.IO.Compression;
 using WedSite.Database;
 using WedSite.Tracker;
 
@@ -42,6 +45,19 @@ namespace WedSite
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+
+            services.Configure<GzipCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Optimal;
+            });
+            
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+                options.Providers.Add<GzipCompressionProvider>();
+            });
+
             services.AddRazorPages();
         }
 
@@ -59,7 +75,16 @@ namespace WedSite
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = context =>
+                {
+                    int threeDaysInSeconds = 3600 * 24 * 3;
+                    context.Context.Response.Headers[HeaderNames.CacheControl] = "public,max-age=" + threeDaysInSeconds;
+                }
+            });
+
+            app.UseResponseCompression();
             app.UseStatusCodePages(async context =>
             {
                 context.HttpContext.Response.ContentType = "text/html";

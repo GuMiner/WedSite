@@ -20,7 +20,10 @@
             <h3>Redmond/Bellevue</h3>
             <p>
                 <a href="https://www.microsoft.com/en-us/visitorcenter/default">Microsoft Corporate Visitor Center</a> <br />
-                <a href="https://www.sushimebellevue.com/">Sushi Me Conveyor Belt Sushi</a>
+                <a href="https://www.sushimebellevue.com/">Sushi Me Conveyor Belt Sushi</a> <br />
+                <a href="https://www.tipsycowburgerbar.com/">Tipsy Cow Burger Bar</a> <br />
+                <a href="https://www.doughzonedumplinghouse.com/">Dough Zone Chinese Dumplings</a> <br />
+                <a href="https://bellevuecollection.com/">Bellevue Square Mall</a>
             </p>
 
             <br />
@@ -28,12 +31,13 @@
             <hr />
             <p>
                 <a href="http://www.seattle.gov/parks/find/parks/kerry-park">Kerry Park</a> <br />
-                <a href="http://www.nwoc.com/">Lake Union Kayak Rentals</a>
+                <a href="http://www.nwoc.com/">Lake Union Kayak Rentals (NWOC)</a>
             </p>
 
             <h3>Seattle Downtown</h3>
             <p>
-                <a href="http://www.seattleartmuseum.org/visit/olympic-sculpture-park">Olympic Sculpture Park</a>
+                <a href="http://www.seattleartmuseum.org/visit/olympic-sculpture-park">Olympic Sculpture Park</a> <br />
+                <a href="http://pikeplacemarket.org/">Pike Place Market</a>
             </p>
 
             <h4>Seattle Center</h4>
@@ -65,7 +69,8 @@
             <hr />
             <p>
                 <a href="https://kubotagarden.org/index.html">Kubota Japanese Garden</a> <br />
-                <a href="https://www.round1usa.com/location/south-center-mall/">Round1 Japanese Arcade and Bowling</a>
+                <a href="https://www.round1usa.com/location/south-center-mall/">Round1 Japanese Arcade and Bowling</a> <br />
+                <a href="https://www.westfield.com/southcenter">Westfield Southcenter Mall</a>
             </p>
 
             <br />
@@ -131,11 +136,14 @@
         var kerryPark = L.marker([47.629601, -122.360015]).bindPopup("🌲 Kerry Park", { autoClose: false, closeButton: false });
         var rattlesnake = L.marker([47.432999, -121.767139]).bindPopup("🌲 Rattlesnake Ledge", { autoClose: false, closeButton: false });
         var alki = L.marker([47.58174, -122.405194]).bindPopup("🌲 Alki Beach", { autoClose: false, closeButton: false });
-        var gasworks = L.marker([47.645401, -122.33492]).bindPopup("🌲 Alki Beach", { autoClose: false, closeButton: false });
+        var gasworks = L.marker([47.645401, -122.33492]).bindPopup("🌲 Gasworks Park", { autoClose: false, closeButton: false });
         var kubota = L.marker([47.51396, -122.265794]).bindPopup("🌲 Kubota Garden", { autoClose: false, closeButton: false });
         var wallace = L.marker([47.867292, -121.681381]).bindPopup("🌲 Wallace Falls", { autoClose: false, closeButton: false });
+        var ballardLocks = L.marker([47.665191, -122.39936]).bindPopup("🌲 Ballard Locks", { autoClose: false, closeButton: false });
 
         var sushiMe = L.marker([47.621299, -122.132778]).bindPopup("🍣 SushiMe", { autoClose: false, closeButton: false });
+        var tipsyCow = L.marker([47.67318, -122.122252]).bindPopup("🍣 Tipsy Cow", { autoClose: false, closeButton: false });
+        var doughZone = L.marker([47.670952, -122.113872]).bindPopup("🍣 Dough Zone", { autoClose: false, closeButton: false });
 
         var round1 = L.marker([47.460109, -122.256104]).bindPopup("🎮 Round1", { autoClose: false, closeButton: false });
         var fullTilt = L.marker([47.667928, -122.383794]).bindPopup("🎮 Full Tilt", { autoClose: false, closeButton: false });
@@ -143,10 +151,22 @@
         var kayaking = L.marker([47.638213, -122.340252]).bindPopup("⛴ NWOC Kayaking", { autoClose: false, closeButton: false });
         var ferry = L.marker([47.81261, -122.382713]).bindPopup("⛴ Edmonds Ferry", { autoClose: false, closeButton: false });
 
-        var outdoorLayer = L.layerGroup([kerryPark, rattlesnake, alki, gasworks, kubota, wallace]);
-        var foodLayer = L.layerGroup([sushiMe]);
+        var leavenworth = L.marker([47.593708, -120.666247]).bindPopup("📷 Leavenworth", { autoClose: false, closeButton: false });
+        var seattleCenter = L.marker([47.621383, -122.350395]).bindPopup("📷 Seattle Center", { autoClose: false, closeButton: false });
+        var msftVisitor = L.marker([47.642293, -122.135799]).bindPopup("📷 MSFT Visitor Center", { autoClose: false, closeButton: false });
+        var olympicSculpturePark = L.marker([47.615835, -122.355625]).bindPopup("📷 Olympic Sculpture Park", { autoClose: false, closeButton: false });
+        var fremontTroll = L.marker([47.651044, -122.347147]).bindPopup("📷 Fremont Troll", { autoClose: false, closeButton: false });
+
+        var southcenterMall = L.marker([47.45941, -122.259754]).bindPopup("🎁 Southcenter Mall", { autoClose: false, closeButton: false });
+        var bellevueMall = L.marker([47.616648, -122.20409]).bindPopup("🎁 Bellevue Square Mall", { autoClose: false, closeButton: false });
+        var pikePlace = L.marker([47.60919, -122.342327]).bindPopup("🎁 Pike Place Market", { autoClose: false, closeButton: false });
+
+        var outdoorLayer = L.layerGroup([kerryPark, rattlesnake, alki, gasworks, kubota, wallace, ballardLocks]);
+        var foodLayer = L.layerGroup([sushiMe, tipsyCow, doughZone]);
         var arcadeLayer = L.layerGroup([round1, fullTilt]);
         var waterLayer = L.layerGroup([kayaking, ferry]);
+        var sightseeingLayer = L.layerGroup([leavenworth, seattleCenter, msftVisitor, olympicSculpturePark, fremontTroll]);
+        var shoppingLayer = L.layerGroup([southcenterMall, bellevueMall, pikePlace]);
 
         var tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -185,16 +205,21 @@
         var visitingMap = L.map('mapId', {
             center: [47.6358, -122.1419],
             zoom: 10,
-            layers: [tileLayer, outdoorLayer, foodLayer, arcadeLayer, waterLayer]
+            layers: [tileLayer, outdoorLayer, foodLayer, arcadeLayer, waterLayer, sightseeingLayer, shoppingLayer]
         });
 
-        L.control.layers({}, { "🌲 Outdoors": outdoorLayer, "🍣 Food": foodLayer, "🎮 Arcade": arcadeLayer, '⛴ Water': waterLayer }).addTo(visitingMap);
+        L.control.layers({}, {
+            "🌲 Outdoors": outdoorLayer, "🍣 Food": foodLayer, "🎮 Arcade": arcadeLayer,
+            '⛴ Water': waterLayer, '📷 Sightseeing': sightseeingLayer, "🎁 Shopping": shoppingLayer
+        }).addTo(visitingMap);
 
         // Rather hacky way to open all popups at startup and when a layer is clicked
         Object.values(outdoorLayer._layers).forEach(layer => layer.openPopup());
         Object.values(foodLayer._layers).forEach(layer => layer.openPopup());
         Object.values(arcadeLayer._layers).forEach(layer => layer.openPopup());
         Object.values(waterLayer._layers).forEach(layer => layer.openPopup());
+        Object.values(sightseeingLayer._layers).forEach(layer => layer.openPopup());
+        Object.values(shoppingLayer._layers).forEach(layer => layer.openPopup());
 
         visitingMap.on('overlayadd', onOverlayAdd);
         function onOverlayAdd(e) {

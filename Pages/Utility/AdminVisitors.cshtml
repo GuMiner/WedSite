@@ -1,5 +1,5 @@
 ﻿@page
-@model VisitingWaModel
+@model AdminVisitorsModel
 
 @using Microsoft.AspNetCore.Identity
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
@@ -25,28 +25,37 @@
     <script type="text/javascript">
         var token = 'cGsuZXlKMUlqb2laM1Z0YVc1bGNpSXNJbUVpT2lKamEyZzNNbVJsYlhjd00zRXdNbkZ1YkhWek0yZG1ibXd6SW4wLkMtTGZmeWNocllTYV9hSmNYT0ZpMnc'
 
-        var kerryPark = L.marker([47.629601, -122.360015]).bindPopup("🌲 Kerry Park", { autoClose: false, closeButton: false });
-        var rattlesnake = L.marker([47.432999, -121.767139]).bindPopup("🌲 Rattlesnake Ledge", { autoClose: false, closeButton: false });
-        var alki = L.marker([47.58174, -122.405194]).bindPopup("🌲 Alki Beach", { autoClose: false, closeButton: false });
-        var gasworks = L.marker([47.645401, -122.33492]).bindPopup("🌲 Alki Beach", { autoClose: false, closeButton: false });
-        var kubota = L.marker([47.51396, -122.265794]).bindPopup("🌲 Kubota Garden", { autoClose: false, closeButton: false });
-        var wallace = L.marker([47.867292, -121.681381]).bindPopup("🌲 Wallace Falls", { autoClose: false, closeButton: false });
+        var locations = []
+        var hackLocations = []
+        var cursoryVisitors = []
+        @foreach (var visit in Model.LocationTimeVisits)
+        {
+            if (visit.HackAttempt)
+            {
+                <text>
+                hackLocations.push(L.marker([@visit.Latitude, @visit.Longitude]).bindPopup("⚙ @visit.IP", { autoClose: false, closeButton: false }));
+                </text>
+            }
+            else if (!visit.VisitedPages || visit.IsRobot)
+            {
+                <text>
+                cursoryVisitors.push(L.marker([@visit.Latitude, @visit.Longitude]).bindPopup("🤖 @visit.IP", { autoClose: false, closeButton: false }));
+                </text>
+            }
+            else
+            {
+                <text>
+                locations.push(L.marker([@visit.Latitude, @visit.Longitude]).bindPopup("@visit.IP", { autoClose: false, closeButton: false }));
+                </text>
+            }
+        }
 
-        var sushiMe = L.marker([47.621299, -122.132778]).bindPopup("🍣 SushiMe", { autoClose: false, closeButton: false });
-
-        var round1 = L.marker([47.460109, -122.256104]).bindPopup("🎮 Round1", { autoClose: false, closeButton: false });
-        var fullTilt = L.marker([47.667928, -122.383794]).bindPopup("🎮 Full Tilt", { autoClose: false, closeButton: false });
-
-        var kayaking = L.marker([47.638213, -122.340252]).bindPopup("⛴ NWOC Kayaking", { autoClose: false, closeButton: false });
-        var ferry = L.marker([47.81261, -122.382713]).bindPopup("⛴ Edmonds Ferry", { autoClose: false, closeButton: false });
-
-        var outdoorLayer = L.layerGroup([kerryPark, rattlesnake, alki, gasworks, kubota, wallace]);
-        var foodLayer = L.layerGroup([sushiMe]);
-        var arcadeLayer = L.layerGroup([round1, fullTilt]);
-        var waterLayer = L.layerGroup([kayaking, ferry]);
+        var locationsLayer = L.layerGroup(locations);
+        var hackLayer = L.layerGroup(hackLocations);
+        var cursoryLayer = L.layerGroup(cursoryVisitors);
 
         var tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 18,
             id: 'mapbox/streets-v11',
             tileSize: 512,
@@ -58,9 +67,6 @@
             cacheMaxAge: (24 * 3600 * 1000) * 10
         });
 
-        @if (httpContextAccessor.HttpContext.User.IsInRole("Admin"))
-        {
-            <text>
         var hits = 0
         var misses = 0;
         var errors = 0;
@@ -76,43 +82,34 @@
             console.log('Cache error: ', ev.tile, ev.error, " ", hits, " ", misses, " ", errors);
             errors += 1;
         });
-            </text>
-        }
 
         var visitingMap = L.map('mapId', {
-            center: [47.6358, -122.1419],
+        center: [47.6358, -122.1419],
             zoom: 10,
-            layers: [tileLayer, outdoorLayer, foodLayer, arcadeLayer, waterLayer]
+            layers: [tileLayer, locationsLayer]
         });
 
-        L.control.layers({}, { "🌲 Outdoors": outdoorLayer, "🍣 Food": foodLayer, "🎮 Arcade": arcadeLayer, '⛴ Water': waterLayer }).addTo(visitingMap);
+        L.control.layers({}, { "Visitors": locationsLayer, "Hackers": hackLayer, "Cursory Visits": cursoryLayer }).addTo(visitingMap);
 
         // Rather hacky way to open all popups at startup and when a layer is clicked
-        Object.values(outdoorLayer._layers).forEach(layer => layer.openPopup());
-        Object.values(foodLayer._layers).forEach(layer => layer.openPopup());
-        Object.values(arcadeLayer._layers).forEach(layer => layer.openPopup());
-        Object.values(waterLayer._layers).forEach(layer => layer.openPopup());
+        Object.values(locationsLayer._layers).forEach(layer => layer.openPopup());
+        Object.values(hackLayer._layers).forEach(layer => layer.openPopup());
+        Object.values(cursoryLayer._layers).forEach(layer => layer.openPopup());
 
         visitingMap.on('overlayadd', onOverlayAdd);
         function onOverlayAdd(e) {
             Object.values(e.layer._layers).forEach(layer => layer.openPopup());
         }
 
-        // Admin-only click help text.
-        @if (httpContextAccessor.HttpContext.User.IsInRole("Admin"))
+        var popup = L.popup();
+        function onMapClick(e)
         {
-            <text>
-            var popup = L.popup();
-            function onMapClick(e)
-            {
-                popup
-                    .setLatLng(e.latlng)
-                    .setContent("You clicked the map at " + e.latlng.toString())
-                    .openOn(visitingMap);
-            }
-
-            visitingMap.on('click', onMapClick);
-            </text>
+            popup
+                .setLatLng(e.latlng)
+                .setContent("You clicked the map at " + e.latlng.toString())
+                .openOn(visitingMap);
         }
+
+        visitingMap.on('click', onMapClick);
     </script>
 }

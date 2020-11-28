@@ -12,7 +12,55 @@ namespace WedSite.Database
     {
         private readonly ILiteDatabase database;
         private readonly ILogger<LiteDbDatabase> logger;
-        
+
+        private readonly HashSet<string> hackerPages = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "/.env",
+            "//2018/wp-includes/wlwmanifest.xml",
+            "//2019/wp-includes/wlwmanifest.xml",
+            "//blog/wp-includes/wlwmanifest.xml",
+            "//news/wp-includes/wlwmanifest.xml",
+            "//site/wp-includes/wlwmanifest.xml",
+            "//sito/wp-includes/wlwmanifest.xml",
+            "//sito/wp-includes/wlwmanifest.xml",
+            "//test/wp-includes/wlwmanifest.xml",
+            "//website/wp-includes/wlwmanifest.xml",
+            "//wordpress/wp-includes/wlwmanifest.xml",
+            "//wp1/wp-includes/wlwmanifest.xml",
+            "//wp2/wp-includes/wlwmanifest.xml",
+            "//wp-includes/wlwmanifest.xml",
+            "//xmlrpc.php",
+            "/admin/includes/general.js",
+            "/admin/view/javascript/common.js",
+            "/administrator/",
+            "/administrator/help/en-GB/toc.json",
+            "/administrator/language/en-GB/install.xml",
+            "/fckeditor/editor/filemanager/connectors/php/upload.php",
+            "/images/editor/separator.gif",
+            "/misc/ajax.js",
+            "/plugins/system/debug/debug.xml",
+            "/vendor/phpunit/phpunit/build.xml",
+            "/wp-admin/install.php",
+            "/wp-admin/setup-config.php",
+            "/wp-includes/js/jquery/jquery.js",
+        };
+
+        private readonly HashSet<string> robotPages = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "/robots.txt",
+            "//robots.txt",
+            "/ads.txt",
+            "/BingSiteAuth.xml",
+            "/google67faf96cdb2f5ffb.html",
+            "/google7e6ac75d41af09d5.html",
+        };
+
+        private readonly HashSet<string> defaultPages = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "/",
+            "//",
+        };
+
         public LiteDbDatabase(ILogger<LiteDbDatabase> logger)
         {
             database = new LiteDatabase("Filename=./WedSite.db");
@@ -30,6 +78,9 @@ namespace WedSite.Database
 
             var ipLookupCollection = db.GetCollection<CachedIp>("ipsToLookup");
             ipLookupCollection.EnsureIndex(ip => ip.IP);
+
+            var anonymousCollection = db.GetCollection<AnonymousVisit>("anonymousVisits");
+            anonymousCollection.EnsureIndex(v => v.IP);
         }
 
         public void AddAnonymousVisit(AnonymousVisit anonymousVisit)
@@ -121,6 +172,48 @@ namespace WedSite.Database
             {
                 lookupCollection.Delete(cachedIp.Id);
             }
+        }
+
+        public IEnumerable<CachedIp> GetVisitedIps()
+        {
+            var collection = database.GetCollection<CachedIp>("ipCache");
+            return collection.FindAll().ToList();
+        }
+
+        public bool IsHacker(string ip)
+        {
+            ip = ip.ToLowerInvariant();
+
+            var collection = database.GetCollection<AnonymousVisit>("anonymousVisits");
+            var result = collection.Query()
+                .Where(v => v.IP.Equals(ip))
+                .Where(v => hackerPages.Contains(v.PageName))
+                .FirstOrDefault();
+            return result != null;
+        }
+
+        public bool IsRobot(string ip)
+        {
+            ip = ip.ToLowerInvariant();
+
+            var collection = database.GetCollection<AnonymousVisit>("anonymousVisits");
+            var result = collection.Query()
+                .Where(v => v.IP.Equals(ip))
+                .Where(v => robotPages.Contains(v.PageName))
+                .FirstOrDefault();
+            return result != null;
+        }
+
+        public bool VisitedPages(string ip)
+        {
+            ip = ip.ToLowerInvariant();
+
+            var collection = database.GetCollection<AnonymousVisit>("anonymousVisits");
+            var result = collection.Query()
+                .Where(v => v.IP.Equals(ip))
+                .Where(v => !defaultPages.Contains(v.PageName))
+                .FirstOrDefault();
+            return result != null;
         }
 
         public void Dispose()
