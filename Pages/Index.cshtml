@@ -3,18 +3,26 @@
 @{
     ViewData["Title"] = "Home";
 }
+<style>
+    body {
+        background-image: url('img/flowers-2.JPG');
+        background-position: bottom;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
 
 <div class="container">
     <div class="row-auto">
         <div class="col-auto">
-            <div class="text-center">
-                <h3>We are getting married <span id="countdownDays">soon</span><small><span id="countdownRemaining"></span></small>!</h3>
-            </div>
+            <img class="img-fluid img-thumbnail" src="~/img/Engagement2.jpg" alt="Angie and Gustave engagement photo" />
         </div>
     </div>
     <div class="row-auto">
         <div class="col-auto">
-            <img class="img-fluid rounded" src="~/img/Engagement2.jpg" alt="Angie and Gustave engagement photo" />
+            <div class="text-center">
+                <h3 style="background-color:#ffffff7a">We are getting married <span id="countdownDays">soon</span><small><span id="countdownRemaining"></span></small>!</h3>
+            </div>
         </div>
     </div>
 </div>
