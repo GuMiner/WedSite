@@ -23,7 +23,10 @@
                 <a href="https://www.sushimebellevue.com/">Sushi Me Conveyor Belt Sushi</a> <br />
                 <a href="https://www.tipsycowburgerbar.com/">Tipsy Cow Burger Bar</a> <br />
                 <a href="https://www.doughzonedumplinghouse.com/">Dough Zone Chinese Dumplings</a> <br />
-                <a href="https://bellevuecollection.com/">Bellevue Square Mall</a>
+                <a href="https://www.jinyaramenbar.com/">Jinya Ramen</a> <br />
+                <a href="https://bellevuecollection.com/">Bellevue Square Mall</a> <br />
+                <a href="https://www.facebook.com/The-Three-Lions-Pub-117450738274399/">The Three Lions Pub</a> <br />
+                <a href="https://rachathai.com/redmond/">Racha Noodles & Thai Cuisine Redmond</a>
             </p>
 
             <br />
@@ -38,6 +41,7 @@
             <p>
                 <a href="http://www.seattleartmuseum.org/visit/olympic-sculpture-park">Olympic Sculpture Park</a> <br />
                 <a href="http://pikeplacemarket.org/">Pike Place Market</a>
+                <a href="https://sushikanpai.net/">Kanpai Sushi</a>
             </p>
 
             <h4>Seattle Center</h4>
@@ -144,6 +148,10 @@
         var sushiMe = L.marker([47.621299, -122.132778]).bindPopup("🍣 SushiMe", { autoClose: false, closeButton: false });
         var tipsyCow = L.marker([47.67318, -122.122252]).bindPopup("🍣 Tipsy Cow", { autoClose: false, closeButton: false });
         var doughZone = L.marker([47.670952, -122.113872]).bindPopup("🍣 Dough Zone", { autoClose: false, closeButton: false });
+        var sushiKanpai = L.marker([47.607394, -122.327784]).bindPopup("🍣 Kanpai Sushi", { autoClose: false, closeButton: false });
+        var jinyaRamen = L.marker([47.62053, -122.130157]).bindPopup("🍣 Jinya Ramen", { autoClose: false, closeButton: false });
+        var threeLionsPub = L.marker([47.675951, -122.12636]).bindPopup("🍣 The Three Lions Pub", { autoClose: false, closeButton: false });
+        var rachaThai = L.marker([47.681853, -122.123518]).bindPopup("🍣 Racha Noodles & Thai Cuisine Redmond", { autoClose: false, closeButton: false });
 
         var round1 = L.marker([47.460109, -122.256104]).bindPopup("🎮 Round1", { autoClose: false, closeButton: false });
         var fullTilt = L.marker([47.667928, -122.383794]).bindPopup("🎮 Full Tilt", { autoClose: false, closeButton: false });
@@ -162,7 +170,7 @@
         var pikePlace = L.marker([47.60919, -122.342327]).bindPopup("🎁 Pike Place Market", { autoClose: false, closeButton: false });
 
         var outdoorLayer = L.layerGroup([kerryPark, rattlesnake, alki, gasworks, kubota, wallace, ballardLocks]);
-        var foodLayer = L.layerGroup([sushiMe, tipsyCow, doughZone]);
+        var foodLayer = L.layerGroup([sushiMe, tipsyCow, doughZone, sushiKanpai, jinyaRamen, threeLionsPub, rachaThai]);
         var arcadeLayer = L.layerGroup([round1, fullTilt]);
         var waterLayer = L.layerGroup([kayaking, ferry]);
         var sightseeingLayer = L.layerGroup([leavenworth, seattleCenter, msftVisitor, olympicSculpturePark, fremontTroll]);

@@ -44,7 +44,11 @@ namespace WedSite
             services.AddSingleton<IDatabase, LiteDbDatabase>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Identity/Account/Login";
+                    options.LogoutPath = "/Identity/Account/Logout";
+                });
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
