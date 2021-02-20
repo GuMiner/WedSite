@@ -1,13 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
-
-@{ 
-    var ip = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.IsIPv4MappedToIPv6 ?
-        httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4() :
-        httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,7 +24,6 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Schedule">Schedule & Venue</a>
@@ -63,7 +53,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container" style="background-color:#ffffff7a">
-            &copy; @(DateTime.UtcNow.Year) - Gustave Granroth - <a asp-area="" asp-page="/Utility/AdminLogin">Admin</a> - IP @ip
+            &copy; @(DateTime.UtcNow.Year) - Gustave Granroth - <a asp-area="" asp-page="/Utility/AdminLogin">Admin</a>
         </div>
     </footer>
 
