@@ -22,8 +22,8 @@ sudo setcap CAP_NET_BIND_SERVICE=+eip /usr/share/dotnet/dotnet
 (copy wwwroot to 'wedsite')
 Run ``dotnet ./WedSite.dll --urls "https://*:443;http://*:80"`` as root to setup certs for angiegus.com and www.angiegus.com
 
-cd wedsite
-chown -R angiegus:angiegus *
+# cd wedsite
+# chown -R angiegus:angiegus *
 
 create user angiegus, password proton2german4, name AngieGus
 nano /etc/supervisor/conf.d/angiegus.conf
@@ -31,7 +31,7 @@ nano /etc/supervisor/conf.d/angiegus.conf
 >>
 [program:wedsite]
 command=/usr/bin/dotnet ./WedSite.dll --urls "https://*:443;http://*:80"
-user=angiegus
+user=root
 stderr_logfile = /home/angiegus/wedsite/stderr.log
 stdout_logfile = /home/angiegus/wedsite/stdout.log
 directory = /home/angiegus/wedsite

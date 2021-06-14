@@ -5,10 +5,14 @@
 
     List<KeyValuePair<string, string>> questionsWithAnswers = new List<KeyValuePair<string, string>>
     {
-            new KeyValuePair<string, string>("What should I wear?", "Dresses, slacks, suits, other semi-formal wear, etc."),
-            new KeyValuePair<string, string>("Where should I stay?", "The Puget Sound area has a plethora of options, with many hotels and AirBnbs around the airport and downtown areas."),
-            new KeyValuePair<string, string>("Will there be food?", "Yes! There will be dinner, drinks, and dessert!"),
-            new KeyValuePair<string, string>("Will there be dancing?", "Yes! There will be dancing. Look for where to provide song suggestions in your RSVP."),
+
+        new KeyValuePair<string, string>("Where should I stay?", "The Puget Sound area has a plethora of options, with many hotels and AirBnbs around the airport and downtown areas." + 
+            "<br /><br /> You can stay wherever you think is best!"),
+        new KeyValuePair<string, string>("What should I wear?", "Dress code is business casual. If you'd like suggestions for what to wear, think dresses/blouses or button-downs/slacks." + 
+            "<br /><br /> If you're wearing a black tie suit or sweats you've gone too far, abort, abort."),
+        new KeyValuePair<string, string>("Will there be food and drinks?", "Yes! There will be dinner, drinks, and dessert!" + 
+            "<br /><br /> There will be a limited hosted bar with beer and wine."),
+        new KeyValuePair<string, string>("Will there be dancing?", "Yes! There will be dancing. We welcome song suggestions when RSVPing."),
     };
     int headerCounter = 0;
 }
@@ -16,14 +20,15 @@
 <div class="text-left container">
     <h1 class="display-4">FAQs</h1>
     <hr />
-    <p>Have a question that isn't listed here? Email either <a href="mailto:a.k.brazier@comcast.net">Angie</a> or <a href="mailto:gus.gran@outlook.com">Gustave</a>!</p>
+    <p>Have a question that isn't listed here? Email either <a href="mailto:a.k.brazier@comcast.net" style="color:white">Angie</a> or <a href="mailto:gus.gran@outlook.com" style="color:white">Gustave</a>!</p>
     <div class="accordion" id="accordion">
         @foreach (KeyValuePair<string, string> question in questionsWithAnswers)
         {
             <div class="card">
-                <div class="card-header" id="heading@(headerCounter)">
+                <div class="card-header" id="heading@(headerCounter)" style="background-color: rgb(141 209 142);">
                     <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse@(headerCounter)" aria-expanded="true" aria-controls="collapse@(headerCounter)">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse@(headerCounter)" aria-expanded="true" aria-controls="collapse@(headerCounter)"
+                                style="color:white">
                             @(question.Key)
                         </button>
                     </h2>
@@ -31,7 +36,7 @@
 
                 <div id="collapse@(headerCounter)" class="collapse hide" aria-labelledby="heading@(headerCounter)" data-parent="#accordion">
                     <div class="card-body">
-                        @(question.Value)
+                        @Html.Raw(question.Value)
                     </div>
                 </div>
             </div>
@@ -42,6 +47,13 @@
     <h1>COVID-19 Situation</h1>
     <hr />
     <p>
+        <small>6/12/2021</small>
+        <br />
+        Washington state has opened weddings to full capacity. Masks will not be required, but feel free to wear one if it makes you feel safer.
+        <br /> 
+        We plan on video streaming the ceremony and will post details sooner to our wedding.
+        <br />
+        <br />
         <small>11/5/2020</small>
         <br />
         We are watching the COVID-19 situation and currently are optimistic that there will be no restrictions in place for our wedding next year.
