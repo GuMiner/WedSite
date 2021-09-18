@@ -14,7 +14,6 @@ namespace WedSite
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
                 .ConfigureServices(services => services
-                    .AddHostedService<IpAddressResolver>()
-                    .AddHostedService<AutoBackup>());
+                    .AddHostedService<IpAddressResolver>());
     }
 }

@@ -12,10 +12,10 @@
     <PackageReference Include="LiteDB" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\NewFolder\" />
     <Folder Include="wwwroot\img\weddingparty\" />
   </ItemGroup>
 
